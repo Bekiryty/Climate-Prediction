@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regional Climate Change Predictions</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-primary:   #060d1a;
+            --bg-secondary: #0d1f38;
+            --bg-card:      #0f2545;
+            --bg-card2:     #132d52;
+            --accent:       #00d4ff;
+            --accent2:      #00ff9f;
+            --accent3:      #ff6b35;
+            --text-primary: #ffffff;
+            --text-secondary: #8ab4d4;
+            --text-muted:   #4a6fa5;
+            --border:       #1a3a5c;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        /* ── ANIMATED BACKGROUND ── */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(0,212,255,0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(0,255,159,0.04) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(255,107,53,0.03) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── HEADER ── */
+        header {
+            position: relative;
+            padding: 60px 40px 50px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            background: linear-gradient(180deg, rgba(0,212,255,0.05) 0%, transparent 100%);
+            overflow: hidden;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 200px; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+        }
+
+        .header-tag {
+            display: inline-block;
+            background: rgba(0,212,255,0.1);
+            border: 1px solid rgba(0,212,255,0.3);
+            color: var(--accent);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.75em;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3.2em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff 0%, #00d4ff 50%, #00ff9f 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+
+        header p {
+            color: var(--text-secondary);
+            font-size: 1.05em;
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto 24px;
+            line-height: 1.6;
+        }
+
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-secondary);
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.78em;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .badge:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* ── CONTAINER ── */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 50px 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── SECTION TITLES ── */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .section-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.3em;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .section-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--border), transparent);
+        }
+
+        /* ── STATS GRID ── */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 28px 24px;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+        }
+
+        .stat-card h3 {
+            color: var(--text-muted);
+            font-size: 0.75em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+        }
+
+        .stat-card .value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.4em;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 6px;
+        }
+
+        .stat-card .label {
+            color: var(--text-secondary);
+            font-size: 0.82em;
+        }
+
+        /* ── CHART CARDS ── */
+        .chart-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 28px;
+            border: 1px solid var(--border);
+            margin-bottom: 30px;
+            transition: border-color 0.2s;
+        }
+
+        .chart-card:hover { border-color: rgba(0,212,255,0.3); }
+
+        .chart-card canvas { max-height: 350px; }
+
+        /* ── BUTTONS ── */
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 22px;
+            border-radius: 50px;
+            border: 1.5px solid var(--accent);
+            background: transparent;
+            color: var(--accent);
+            cursor: pointer;
+            font-size: 0.85em;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+            letter-spacing: 0.5px;
+        }
+
+        .btn:hover, .btn.active {
+            background: var(--accent);
+            color: var(--bg-primary);
+            box-shadow: 0 0 20px rgba(0,212,255,0.3);
+        }
+
+        .btn-green {
+            border-color: var(--accent2);
+            color: var(--accent2);
+        }
+
+        .btn-green:hover, .btn-green.active {
+            background: var(--accent2);
+            color: var(--bg-primary);
+            box-shadow: 0 0 20px rgba(0,255,159,0.3);
+        }
+
+        /* ── TABLE ── */
+        .table-container {
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            margin-bottom: 50px;
+        }
+
+        table { width: 100%; border-collapse: collapse; }
+
+        thead { background: var(--bg-secondary); }
+
+        th {
+            color: var(--text-muted);
+            padding: 16px 20px;
+            text-align: left;
+            font-size: 0.75em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 0.9em;
+        }
+
+        tr:last-child td { border-bottom: none; }
+
+        tr:hover td {
+            background: rgba(0,212,255,0.03);
+            color: var(--text-primary);
+        }
+
+        .temp-extreme { color: #ff4444; font-weight: 700; }
+        .temp-high    { color: #ff8c00; font-weight: 700; }
+        .temp-mid     { color: #ffd700; font-weight: 700; }
+        .temp-low     { color: var(--accent2); font-weight: 700; }
+
+        .risk-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.78em;
+            font-weight: 600;
+        }
+
+        /* ── IPCC COMPARISON ── */
+        .ipcc-bar {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 28px;
+            border: 1px solid var(--border);
+            margin-bottom: 50px;
+        }
+
+        .ipcc-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .ipcc-label {
+            width: 130px;
+            color: var(--text-secondary);
+            font-size: 0.85em;
+            font-weight: 500;
+            flex-shrink: 0;
+        }
+
+        .ipcc-track {
+            flex: 1;
+            height: 10px;
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .ipcc-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 1s ease;
+        }
+
+        .ipcc-val {
+            width: 60px;
+            text-align: right;
+            font-weight: 700;
+            font-size: 0.9em;
+            color: var(--text-primary);
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            position: relative;
+            text-align: center;
+            padding: 50px 30px;
+            border-top: 1px solid var(--border);
+            background: linear-gradient(0deg, rgba(0,212,255,0.03) 0%, transparent 100%);
+        }
+
+        .footer-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5em;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .footer-role {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            margin-bottom: 20px;
+        }
+
+        .footer-divider {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            margin: 20px auto;
+            border-radius: 2px;
+        }
+
+        .footer-tech {
+            color: var(--text-muted);
+            font-size: 0.8em;
+            line-height: 1.8;
+        }
+
+        /* ── SCROLLBAR ── */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+    <div class="header-tag">🌍 Deep Learning Climate Research</div>
+    <h1>Regional Climate<br>Change Predictions</h1>
+    <p>A hybrid CNN-LSTM-Attention architecture analyzing temperature anomalies, CO₂ concentrations, and sea-level changes across 6 continents from 1959 to 2100.</p>
+    <div class="badges">
+        <span class="badge">NASA GISS</span>
+        <span class="badge">NOAA</span>
+        <span class="badge">PyTorch</span>
+        <span class="badge">CNN-LSTM-Attention</span>
+        <span class="badge">Optuna Tuned</span>
+        <span class="badge">R² up to 0.997</span>
+        <span class="badge">6 Continental Models</span>
+    </div>
+</header>
+
+<div class="container">
+
+    <!-- STATS -->
+    <div class="stats-grid" id="statsGrid">
+        <div class="stat-card">
+            <h3>Fastest Warming Region 2100</h3>
+            <div class="value" id="fastestRegion">...</div>
+            <div class="label" id="fastestVal">Loading...</div>
+        </div>
+        <div class="stat-card">
+            <h3>Average Projection 2100</h3>
+            <div class="value" id="globalAvg">...</div>
+            <div class="label">vs IPCC moderate ~2.7°C</div>
+        </div>
+        <div class="stat-card">
+            <h3>Most Stable Region 2100</h3>
+            <div class="value" id="stableRegion">...</div>
+            <div class="label" id="stableVal">Loading...</div>
+        </div>
+    </div>
+
+    <!-- HISTORICAL -->
+    <div class="section-header">
+        <div class="section-dot"></div>
+        <div class="section-title">Historical Temperature Anomalies (1959–2020)</div>
+        <div class="section-line"></div>
+    </div>
+    <div class="chart-card">
+        <canvas id="historicalChart"></canvas>
+    </div>
+
+    <!-- PROJECTIONS -->
+    <div class="section-header">
+        <div class="section-dot" style="background:var(--accent2);box-shadow:0 0 10px var(--accent2)"></div>
+        <div class="section-title">Future Projections by Year</div>
+        <div class="section-line"></div>
+    </div>
+    <div class="btn-group">
+        <button class="btn btn-green active" onclick="updateProjectionChart(2030, this)">2030</button>
+        <button class="btn btn-green" onclick="updateProjectionChart(2050, this)">2050</button>
+        <button class="btn btn-green" onclick="updateProjectionChart(2100, this)">2100</button>
+    </div>
+    <div class="chart-card">
+        <canvas id="projectionChart"></canvas>
+    </div>
+
+    <!-- IPCC COMPARISON -->
+    <div class="section-header">
+        <div class="section-dot" style="background:var(--accent3);box-shadow:0 0 10px var(--accent3)"></div>
+        <div class="section-title">2100 Projections vs IPCC Reference (2.7°C)</div>
+        <div class="section-line"></div>
+    </div>
+    <div class="ipcc-bar" id="ipccBars"></div>
+
+    <!-- TABLE -->
+    <div class="section-header">
+        <div class="section-dot"></div>
+        <div class="section-title">Complete Projection Data</div>
+        <div class="section-line"></div>
+    </div>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Region</th>
+                    <th>2020 Actual</th>
+                    <th>2030</th>
+                    <th>2050</th>
+                    <th>2100</th>
+                    <th>Risk Level</th>
+                </tr>
+            </thead>
+            <tbody id="dataTable"></tbody>
+        </table>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-name">Bekir Yıldırım</div>
+        <div class="footer-role">Deep Learning Researcher · Climate Science</div>
+        <div class="footer-divider"></div>
+        <div class="footer-tech">
+            Built with PyTorch · CNN-LSTM-Attention Architecture · Optuna Hyperparameter Optimization<br>
+            Data Sources: NASA GISS · NOAA Climate at a Glance · Our World in Data<br>
+            Model Performance: R² 0.965 – 0.997 across all variables
+        </div>
+    </footer>
+
+</div>
+
+<script>
+const API = window.location.origin;
+
+const COLORS = {
+    Africa:       "#ff6b6b",
+    Asia:         "#ffa94d",
+    Europe:       "#74c0fc",
+    NorthAmerica: "#69db7c",
+    SouthAmerica: "#cc5de8",
+    Oceania:      "#f03e3e"
+};
+
+let summaryData = {}, historicalData = {};
+
+async function loadData() {
+    const [summary, historical] = await Promise.all([
+        fetch(`${API}/summary`).then(r => r.json()),
+        fetch(`${API}/historical`).then(r => r.json())
+    ]);
+    summaryData    = summary;
+    historicalData = historical;
+    updateStats();
+    buildHistoricalChart();
+    updateProjectionChart(2030, document.querySelector(".btn-green.active"));
+    buildIPCCBars();
+    buildTable();
+}
+
+function updateStats() {
+    const regions  = Object.keys(summaryData);
+    const vals2100 = regions.map(r => ({ r, v: summaryData[r].projected_2100 }));
+    vals2100.sort((a, b) => b.v - a.v);
+    const fastest = vals2100[0];
+    const slowest = vals2100[vals2100.length - 1];
+    const avg     = (vals2100.reduce((s, x) => s + x.v, 0) / vals2100.length).toFixed(2);
+    document.getElementById("fastestRegion").textContent = fastest.r;
+    document.getElementById("fastestVal").textContent    = `+${fastest.v}°C by 2100`;
+    document.getElementById("globalAvg").textContent     = `+${avg}°C`;
+    document.getElementById("stableRegion").textContent  = slowest.r;
+    document.getElementById("stableVal").textContent     = `+${slowest.v}°C by 2100`;
+}
+
+function buildHistoricalChart() {
+    const ctx     = document.getElementById("historicalChart").getContext("2d");
+    const regions = Object.keys(historicalData);
+    const years   = historicalData[regions[0]].years;
+    new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: years,
+            datasets: regions.map(r => ({
+                label: r,
+                data: historicalData[r].temps,
+                borderColor: COLORS[r],
+                backgroundColor: "transparent",
+                borderWidth: 2,
+                pointRadius: 0,
+                tension: 0.4
+            }))
+        },
+        options: {
+            responsive: true,
+            interaction: { mode: "index", intersect: false },
+            plugins: {
+                legend: { labels: { color: "#8ab4d4", usePointStyle: true, pointStyle: "circle" } },
+                tooltip: {
+                    backgroundColor: "#0d1f38",
+                    borderColor: "#1a3a5c",
+                    borderWidth: 1,
+                    titleColor: "#ffffff",
+                    bodyColor: "#8ab4d4"
+                }
+            },
+            scales: {
+                x: { ticks: { color: "#4a6fa5", maxTicksLimit: 10 }, grid: { color: "#0d1f38" } },
+                y: {
+                    ticks: { color: "#4a6fa5" },
+                    grid: { color: "#0d1f38" },
+                    title: { display: true, text: "Temperature Anomaly (°C)", color: "#8ab4d4" }
+                }
+            }
+        }
+    });
+}
+
+let projChart = null;
+function updateProjectionChart(year, btn) {
+    document.querySelectorAll(".btn-green").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    const regions = Object.keys(summaryData);
+    const key     = `projected_${year}`;
+    const vals    = regions.map(r => summaryData[r][key]);
+    const ctx     = document.getElementById("projectionChart").getContext("2d");
+    if (projChart) projChart.destroy();
+    projChart = new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: regions,
+            datasets: [{
+                label: `Projected Warming ${year} (°C)`,
+                data: vals,
+                backgroundColor: regions.map(r => COLORS[r] + "cc"),
+                borderColor: regions.map(r => COLORS[r]),
+                borderWidth: 2,
+                borderRadius: 8,
+                borderSkipped: false,
+            }, {
+                label: "IPCC Global Avg (~2.7°C)",
+                data: regions.map(() => 2.7),
+                type: "line",
+                borderColor: "#ff4444",
+                borderDash: [6, 4],
+                borderWidth: 2,
+                pointRadius: 0,
+                backgroundColor: "transparent"
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { labels: { color: "#8ab4d4", usePointStyle: true } },
+                tooltip: {
+                    backgroundColor: "#0d1f38",
+                    borderColor: "#1a3a5c",
+                    borderWidth: 1,
+                    titleColor: "#ffffff",
+                    bodyColor: "#8ab4d4"
+                }
+            },
+            scales: {
+                x: { ticks: { color: "#8ab4d4" }, grid: { color: "#0d1f38" } },
+                y: {
+                    ticks: { color: "#4a6fa5" },
+                    grid: { color: "#0d1f38" },
+                    title: { display: true, text: "Temperature Anomaly (°C)", color: "#8ab4d4" }
+                }
+            }
+        }
+    });
+}
+
+function buildIPCCBars() {
+    const container = document.getElementById("ipccBars");
+    const regions   = Object.keys(summaryData);
+    const max       = Math.max(...regions.map(r => summaryData[r].projected_2100));
+    container.innerHTML = regions.map(r => {
+        const val  = summaryData[r].projected_2100;
+        const pct  = (val / max * 100).toFixed(1);
+        const ipcc = (2.7 / max * 100).toFixed(1);
+        return `
+        <div class="ipcc-row">
+            <div class="ipcc-label" style="color:${COLORS[r]};font-weight:600">${r}</div>
+            <div class="ipcc-track">
+                <div class="ipcc-fill" style="width:${pct}%;background:linear-gradient(90deg,${COLORS[r]},${COLORS[r]}88)"></div>
+            </div>
+            <div class="ipcc-val">${val}°C</div>
+        </div>`;
+    }).join("") + `
+    <div style="margin-top:16px;padding-top:16px;border-top:1px solid #1a3a5c;color:#4a6fa5;font-size:0.8em">
+        ⚠️ IPCC AR6 moderate scenario (SSP2-4.5) global average: <strong style="color:#ff4444">2.7°C</strong> by 2100. All continental projections exceed this threshold.
+    </div>`;
+}
+
+function getRisk(val) {
+    if (val >= 8)  return '<span class="risk-badge" style="background:rgba(255,68,68,0.15);color:#ff4444">Extreme 🔴</span>';
+    if (val >= 5)  return '<span class="risk-badge" style="background:rgba(255,140,0,0.15);color:#ff8c00">Very High 🟠</span>';
+    if (val >= 3)  return '<span class="risk-badge" style="background:rgba(255,215,0,0.15);color:#ffd700">High 🟡</span>';
+    return '<span class="risk-badge" style="background:rgba(0,255,159,0.15);color:#00ff9f">Moderate 🟢</span>';
+}
+
+function getTempClass(val) {
+    if (val >= 8) return 'temp-extreme';
+    if (val >= 5) return 'temp-high';
+    if (val >= 3) return 'temp-mid';
+    return 'temp-low';
+}
+
+function buildTable() {
+    const tbody   = document.getElementById("dataTable");
+    const regions = Object.keys(summaryData);
+    tbody.innerHTML = regions.map(r => {
+        const d = summaryData[r];
+        return `<tr>
+            <td><strong style="color:${COLORS[r]}">${r}</strong></td>
+            <td>${d.current_2020}°C</td>
+            <td class="${getTempClass(d.projected_2030)}">${d.projected_2030}°C</td>
+            <td class="${getTempClass(d.projected_2050)}">${d.projected_2050}°C</td>
+            <td class="${getTempClass(d.projected_2100)}">${d.projected_2100}°C</td>
+            <td>${getRisk(d.projected_2100)}</td>
+        </tr>`;
+    }).join("");
+}
+
+loadData();
+</script>
+</body>
+</html>
