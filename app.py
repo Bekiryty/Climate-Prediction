@@ -49,14 +49,20 @@ class CNNLSTMAttention(nn.Module):
         return self.fc2(x).squeeze(-1)
 
 
+# ── DOWNLOAD DATA FILES FROM HF ──────────────────────────────
+print("Downloading data files from HuggingFace...")
+proj_path    = hf_hub_download(repo_id=REPO_ID, filename="saved_model_regional/regional_projections.json", repo_type="model")
+data_path    = hf_hub_download(repo_id=REPO_ID, filename="saved_model_regional/regional_data.csv",         repo_type="model")
+scalers_path = hf_hub_download(repo_id=REPO_ID, filename="saved_model_regional/regional_scalers.pkl",      repo_type="model")
+print("Data files downloaded!")
+
 # ── LOAD DATA ────────────────────────────────────────────────
-with open("saved_model_regional/regional_projections.json", "r") as f:
+with open(proj_path, "r") as f:
     regional_projections = json.load(f)
 
-regional_df = pd.read_csv("saved_model_regional/regional_data.csv")
+regional_df = pd.read_csv(data_path)
 
-# Load scalers
-with open("saved_model_regional/regional_scalers.pkl", "rb") as f:
+with open(scalers_path, "rb") as f:
     regional_scalers = pickle.load(f)
 
 # ── LOAD MODELS FROM HF ──────────────────────────────────────
