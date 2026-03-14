@@ -973,14 +973,7 @@
         </div>
 
         <!-- API Not Connected Notice -->
-        <div class="research-api-notice">
-            <span class="ran-icon">⚡</span>
-            <div class="ran-text">
-                <strong>API not connected yet.</strong> Once the model is uploaded to Hugging Face,
-                this panel will run live CNN-LSTM-Attention predictions for any year you enter.
-                Results will appear below in real-time.
-            </div>
-        </div>
+        
 
         <!-- Results -->
         <div class="research-results" id="researchResults">
@@ -1599,54 +1592,6 @@ function animateValue(el, target, suffix, duration) {
 }
 
 // ── RESEARCH PANEL ───────────────────────────────────────────
-// TODO: Replace runResearch() body with real HF API call when ready
-// API endpoint will be: https://api-inference.huggingface.co/models/YOUR_MODEL
-// Pass: { year: int, region: string } → returns { region: temp_anomaly, ... }
-
-function onResearchInput() {
-    // Ready for future use — validate year range
-    const yr = parseInt(document.getElementById("researchYear").value);
-    const btn = document.getElementById("researchBtn");
-    // Button stays disabled until HF API is connected
-}
-
-function runResearch() {
-    // ── FUTURE: Replace this entire function with real API call ──
-    // const year   = document.getElementById("researchYear").value;
-    // const region = document.getElementById("researchRegion").value;
-    // const res    = await fetch("HF_API_URL", { method:"POST", body: JSON.stringify({year, region}) });
-    // const data   = await res.json();
-    // showResearchResults(year, data);
-
-    // For now: show interpolated demo results from hardcoded data
-    const year = parseInt(document.getElementById("researchYear").value);
-    if (!year || year < 2025 || year > 2100) {
-        document.getElementById("researchYear").style.borderColor = "#ff4444";
-        setTimeout(() => document.getElementById("researchYear").style.borderColor = "", 1000);
-        return;
-    }
-
-    // Linear interpolation between known data points for demo
-    const t = (year - 2020) / (2100 - 2020);
-    const demoResults = {};
-    Object.entries(summaryData).forEach(([region, d]) => {
-        // Interpolate: 2020 → 2030 → 2050 → 2100
-        let val;
-        if (year <= 2030) {
-            const tt = (year - 2020) / 10;
-            val = d.current_2020 + (d.projected_2030 - d.current_2020) * tt;
-        } else if (year <= 2050) {
-            const tt = (year - 2030) / 20;
-            val = d.projected_2030 + (d.projected_2050 - d.projected_2030) * tt;
-        } else {
-            const tt = (year - 2050) / 50;
-            val = d.projected_2050 + (d.projected_2100 - d.projected_2050) * tt;
-        }
-        demoResults[region] = parseFloat(val.toFixed(2));
-    });
-
-    showResearchResults(year, demoResults);
-}
 
 function showResearchResults(year, data) {
     document.getElementById("researchYearTag").textContent = "Year " + year;
@@ -2004,33 +1949,54 @@ function dpStatus(msg, type) {
     else s.style.display = "none";
 }
 
-// ── RESEARCH PANEL ───────────────────────────────────────────
+// ── RESEARCH PANEL ─────────────────────────────────────────
+const RAILWAY_API = window.location.origin;
+
 function onResearchInput() {}
 
-function runResearch() {
-    const year = parseInt(document.getElementById("researchYear").value);
+async function runResearch() {
+    const year    = parseInt(document.getElementById("researchYear").value);
     const yearInp = document.getElementById("researchYear");
-    if (!year || year < 2025 || year > 2100) {
+    const btn     = document.getElementById("researchBtn");
+
+    if (!year || year < 2021 || year > 2100) {
         yearInp.style.borderColor = "#ff4444";
         setTimeout(() => yearInp.style.borderColor = "", 1000);
         return;
     }
 
-    // Interpolate from known data points
-    const results = {};
-    Object.entries(summaryData).forEach(([region, d]) => {
-        let val;
-        if (year <= 2030) {
-            val = d.current_2020 + (d.projected_2030 - d.current_2020) * ((year-2020)/10);
-        } else if (year <= 2050) {
-            val = d.projected_2030 + (d.projected_2050 - d.projected_2030) * ((year-2030)/20);
-        } else {
-            val = d.projected_2050 + (d.projected_2100 - d.projected_2050) * ((year-2050)/50);
-        }
-        results[region] = parseFloat(val.toFixed(2));
-    });
+    // Show loading state
+    btn.disabled  = true;
+    btn.innerHTML = "⏳ Loading...";
 
-    showResearchResults(year, results);
+    try {
+        const res  = await fetch(`${RAILWAY_API}/predict?year=${year}`);
+        if (!res.ok) throw new Error("API error: " + res.status);
+        const data = await res.json();
+
+        // Convert API response to { region: value } format
+        const results = {};
+        Object.entries(data.regions).forEach(([region, d]) => {
+            results[region] = d.predicted;
+        });
+
+        showResearchResults(year, results);
+    } catch (err) {
+        // Fallback to interpolation if API fails
+        console.warn("API failed, using interpolation:", err);
+        const results = {};
+        Object.entries(summaryData).forEach(([region, d]) => {
+            let val;
+            if (year <= 2030)      val = d.current_2020   + (d.projected_2030 - d.current_2020)   * ((year-2020)/10);
+            else if (year <= 2050) val = d.projected_2030  + (d.projected_2050 - d.projected_2030)  * ((year-2030)/20);
+            else                   val = d.projected_2050  + (d.projected_2100 - d.projected_2050)  * ((year-2050)/50);
+            results[region] = parseFloat(val.toFixed(2));
+        });
+        showResearchResults(year, results);
+    } finally {
+        btn.disabled  = false;
+        btn.innerHTML = "🚀 Run Prediction";
+    }
 }
 
 function showResearchResults(year, data) {
