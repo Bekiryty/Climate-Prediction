@@ -54,6 +54,23 @@
             overflow: hidden;
         }
 
+        .pulse-ring {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            border: 1px solid rgba(0,212,255,0.1);
+            pointer-events: none;
+            animation: pulseRing 4s ease-out infinite;
+        }
+        .pulse-ring:nth-child(1) { width:300px; height:300px; animation-delay:0s; }
+        .pulse-ring:nth-child(2) { width:550px; height:550px; animation-delay:1.4s; }
+        .pulse-ring:nth-child(3) { width:800px; height:800px; animation-delay:2.8s; }
+        @keyframes pulseRing {
+            0%   { opacity:0.6; transform:translate(-50%,-50%) scale(0.85); }
+            100% { opacity:0;   transform:translate(-50%,-50%) scale(1.15); }
+        }
+
         header::after {
             content: '';
             position: absolute;
@@ -408,15 +425,479 @@
         ::-webkit-scrollbar-track { background: var(--bg-primary); }
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+
+        /* ── RESEARCH PANEL ── */
+        .research-panel {
+            background: linear-gradient(135deg, #0a1628 0%, #0d1f38 100%);
+            border: 1px solid #1a3a5c;
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+        .research-panel::before {
+            content: '';
+            position: absolute;
+            top: -60px; right: -60px;
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, rgba(0,212,255,0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .research-panel::after {
+            content: '';
+            position: absolute;
+            bottom: -40px; left: -40px;
+            width: 160px; height: 160px;
+            background: radial-gradient(circle, rgba(0,255,159,0.04) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .research-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .research-title span.rt-badge {
+            background: rgba(0,212,255,0.12);
+            border: 1px solid rgba(0,212,255,0.25);
+            color: var(--accent);
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+        .research-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+        .research-input-row {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+        .research-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex: 1;
+            min-width: 180px;
+        }
+        .research-input-group label {
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+        .research-year-input {
+            background: #060d1a;
+            border: 1px solid #1a3a5c;
+            border-radius: 12px;
+            color: white;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            padding: 14px 20px;
+            width: 100%;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            letter-spacing: 0.05em;
+        }
+        .research-year-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(0,212,255,0.1);
+        }
+        .research-year-input::placeholder { color: #2a4a6a; }
+        .research-region-select {
+            background: #060d1a;
+            border: 1px solid #1a3a5c;
+            border-radius: 12px;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 14px 20px;
+            width: 100%;
+            outline: none;
+            cursor: pointer;
+            transition: border-color 0.2s;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234a6fa5' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+        }
+        .research-region-select:focus { border-color: var(--accent); }
+        .research-region-select option { background: #060d1a; }
+        .research-btn {
+            background: linear-gradient(135deg, var(--accent), #0099cc);
+            border: none;
+            border-radius: 12px;
+            color: #060d1a;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            padding: 14px 32px;
+            cursor: not-allowed;
+            opacity: 0.5;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            position: relative;
+        }
+        .research-btn .coming-soon-tip {
+            display: none;
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0d1f38;
+            border: 1px solid #1a3a5c;
+            color: var(--text-secondary);
+            font-size: 0.72rem;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: 8px;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+        .research-btn:hover .coming-soon-tip { display: block; }
+
+        /* Results area */
+        .research-results {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        .research-results.visible { display: block; }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+        .research-results-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .research-results-title {
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+        .research-year-tag {
+            background: rgba(0,212,255,0.1);
+            border: 1px solid rgba(0,212,255,0.25);
+            color: var(--accent);
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 20px;
+        }
+        .research-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+        }
+        .research-result-card {
+            background: #060d1a;
+            border: 1px solid #1a3a5c;
+            border-radius: 14px;
+            padding: 18px 16px;
+            text-align: center;
+            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        .research-result-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            border-radius: 14px 14px 0 0;
+        }
+        .research-result-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+        }
+        .rrc-region {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .rrc-temp {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+        .rrc-unit {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+        .rrc-bar-track {
+            background: rgba(255,255,255,0.06);
+            border-radius: 4px;
+            height: 5px;
+            width: 100%;
+            margin-bottom: 8px;
+            overflow: hidden;
+        }
+        .rrc-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1s cubic-bezier(0.4,0,0.2,1);
+        }
+        .rrc-risk {
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+        }
+
+        /* API not connected notice */
+        .research-api-notice {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(245,158,11,0.06);
+            border: 1px solid rgba(245,158,11,0.2);
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-top: 16px;
+        }
+        .research-api-notice .ran-icon { font-size: 1.2rem; flex-shrink: 0; }
+        .research-api-notice .ran-text { font-size: 0.8rem; color: #d4a847; line-height: 1.5; }
+        .research-api-notice .ran-text strong { color: #f59e0b; }
+
+        @media (max-width: 768px) {
+            .research-panel { padding: 20px 16px; }
+            .research-cards-grid { grid-template-columns: repeat(2, 1fr); }
+            .research-input-row { flex-direction: column; }
+            .research-btn { width: 100%; justify-content: center; }
+        }
+
+
+        /* ── RESEARCH RESULTS ENHANCED ── */
+        .res-summary-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+        .res-sum-box{background:#060d1a;border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:14px;text-align:center}
+        .res-sum-val{font-family:'Space Grotesk',sans-serif;font-size:1.4rem;font-weight:800;line-height:1}
+        .res-sum-lbl{font-size:0.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;margin-top:4px}
+        .res-chart-wrap{background:#060d1a;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:16px 20px;margin-bottom:16px}
+        @media(max-width:600px){
+          .res-summary-row{grid-template-columns:1fr 1fr}
+          .res-sum-box:last-child{grid-column:span 2}
+        }
+        /* ── MOBILE RESPONSIVE ── */
+        @media (max-width: 768px) {
+            header { padding: 40px 20px 36px; }
+            header h1 { font-size: 2rem; }
+            header p { font-size: 0.92em; }
+
+            .container { padding: 0 16px 40px; }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+                margin-bottom: 28px;
+            }
+            .stat-card { padding: 16px 12px; }
+            .stat-card .value { font-size: 1.6em; }
+
+            .section-header { margin: 28px 0 14px; }
+            .section-title { font-size: 0.82em; }
+
+            .chart-card { padding: 16px 12px; border-radius: 12px; }
+            .chart-card canvas { max-height: 220px; }
+
+            .btn-group { gap: 6px; flex-wrap: wrap; }
+            .btn-group button { padding: 8px 16px; font-size: 0.82em; }
+
+            .ipcc-bar { padding: 16px 12px; border-radius: 12px; }
+            .ipcc-row { flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+            .ipcc-label { width: 100%; font-size: 0.85em; }
+            .ipcc-val { font-size: 0.85em; }
+
+            .table-container { border-radius: 12px; padding: 12px; }
+            table { font-size: 0.78em; }
+            th, td { padding: 8px 6px; }
+
+            footer { padding: 28px 20px; }
+            .footer-name { font-size: 1.1em; }
+            .footer-tech { font-size: 0.72em; line-height: 1.7; }
+
+            /* Dev panel mobile */
+            .dev-panel { width: 96%; max-height: 92vh; border-radius: 14px; }
+            .dev-body { padding: 16px; }
+            .dev-fields { grid-template-columns: repeat(2, 1fr); }
+            .dev-actions { flex-direction: column; }
+            .dev-save, .dev-discard { width: 100%; }
+        }
+
+        @media (max-width: 480px) {
+            header h1 { font-size: 1.65rem; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+            .stat-card .value { font-size: 1.4em; }
+            .badge { font-size: 0.7em; padding: 5px 10px; }
+            table { font-size: 0.72em; }
+            th, td { padding: 6px 4px; }
+            /* Hide less important table columns on very small screens */
+            th:nth-child(3), td:nth-child(3) { display: none; }
+            .dev-fields { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        /* ══════════════════════════════════════════
+           DEVELOPER PANEL — ULTIMATE VERSION
+        ══════════════════════════════════════════ */
+        .dev-trigger{background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:0.8em;opacity:0.18;transition:all 0.3s;padding:5px 10px;border-radius:6px}
+        .dev-trigger:hover{opacity:1;color:var(--accent);background:rgba(0,212,255,0.08)}
+        .dev-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.93);z-index:9999;backdrop-filter:blur(14px);align-items:center;justify-content:center}
+        .dev-overlay.active{display:flex}
+        .dev-panel{background:#050e1c;border:1px solid rgba(0,212,255,0.15);border-radius:22px;width:95%;max-width:860px;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 0 120px rgba(0,212,255,0.08),0 50px 100px rgba(0,0,0,0.7),inset 0 1px 0 rgba(255,255,255,0.04)}
+        /* Header */
+        .dp-header{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid rgba(0,212,255,0.1);background:rgba(0,212,255,0.02);flex-shrink:0}
+        .dp-header-left{display:flex;align-items:center;gap:10px}
+        .dp-logo{width:32px;height:32px;background:linear-gradient(135deg,var(--accent),#0066aa);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+        .dp-title{font-size:0.9rem;font-weight:700;color:white;letter-spacing:0.06em}
+        .dp-subtitle{font-size:0.65rem;color:var(--text-muted);letter-spacing:0.08em;text-transform:uppercase}
+        .dp-badges{display:flex;gap:6px}
+        .dp-badge{background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.18);color:var(--accent);border-radius:20px;font-size:0.6rem;font-weight:700;padding:2px 9px;letter-spacing:0.08em;text-transform:uppercase}
+        .dp-badge.warn{background:rgba(245,158,11,0.08);border-color:rgba(245,158,11,0.25);color:#f59e0b}
+        .dp-close{background:rgba(255,80,80,0.08);border:1px solid rgba(255,80,80,0.2);color:#ff6464;border-radius:8px;padding:7px 13px;cursor:pointer;font-size:0.8rem;font-weight:600;transition:all 0.2s}
+        .dp-close:hover{background:rgba(255,80,80,0.2)}
+        /* Login */
+        .dp-login{text-align:center;padding:50px 30px;display:flex;flex-direction:column;align-items:center}
+        .dp-lock{width:64px;height:64px;background:linear-gradient(135deg,rgba(0,212,255,0.15),rgba(0,212,255,0.05));border:1px solid rgba(0,212,255,0.2);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin-bottom:20px}
+        .dp-login h3{font-size:1.15rem;font-weight:700;color:white;margin-bottom:6px}
+        .dp-login p{color:var(--text-secondary);font-size:0.83rem;margin-bottom:28px;line-height:1.6;max-width:320px}
+        .dp-pw-input{background:#080f1e;border:1px solid rgba(0,212,255,0.15);border-radius:14px;color:white;font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:600;padding:15px 22px;width:100%;max-width:300px;text-align:center;letter-spacing:0.35em;outline:none;transition:all 0.2s;display:block;margin:0 auto 14px}
+        .dp-pw-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,212,255,0.1)}
+        .dp-pw-input.shake{animation:dpShake 0.35s ease;border-color:#ff4444}
+        @keyframes dpShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-10px)}40%{transform:translateX(10px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+        .dp-unlock{background:linear-gradient(135deg,var(--accent),#007ab8);border:none;border-radius:12px;color:#060d1a;font-family:'Inter',sans-serif;font-size:0.92rem;font-weight:800;padding:14px 44px;cursor:pointer;transition:all 0.2s;letter-spacing:0.04em}
+        .dp-unlock:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,212,255,0.3)}
+        .dp-login-err{color:#ff6464;font-size:0.8rem;margin-top:12px;display:none}
+        /* Tabs */
+        .dp-editor{display:none;flex-direction:column;flex:1;overflow:hidden}
+        .dp-editor.active{display:flex}
+        .dp-tabs{display:flex;padding:0 20px;border-bottom:1px solid rgba(255,255,255,0.06);flex-shrink:0;overflow-x:auto;gap:2px;background:rgba(0,0,0,0.2)}
+        .dp-tab{background:none;border:none;border-bottom:2px solid transparent;color:var(--text-muted);font-family:'Inter',sans-serif;font-size:0.73rem;font-weight:600;padding:12px 14px;cursor:pointer;letter-spacing:0.07em;text-transform:uppercase;white-space:nowrap;transition:all 0.2s;display:flex;align-items:center;gap:6px}
+        .dp-tab:hover{color:white;background:rgba(255,255,255,0.03)}
+        .dp-tab.active{color:var(--accent);border-bottom-color:var(--accent);background:rgba(0,212,255,0.04)}
+        .dp-tab-icon{font-size:0.9rem}
+        /* Content */
+        .dp-content{flex:1;overflow-y:auto;padding:22px 24px;scrollbar-width:thin;scrollbar-color:#1a3a5c transparent}
+        .dp-panel{display:none}
+        .dp-panel.active{display:block}
+        /* Section label */
+        .dp-sec{font-size:0.67rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);margin:22px 0 10px;display:flex;align-items:center;gap:8px}
+        .dp-sec::after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.06)}
+        .dp-sec:first-child{margin-top:0}
+        /* Cards */
+        .dp-card{background:#080f1e;border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:18px;margin-bottom:10px}
+        .dp-card-title{font-size:0.82rem;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+        /* Grids */
+        .dp-g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+        .dp-g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+        .dp-g1{display:grid;grid-template-columns:1fr;gap:10px}
+        /* Fields */
+        .dp-field label{display:block;font-size:0.62rem;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;color:var(--text-muted);margin-bottom:5px}
+        .dp-field input,.dp-field textarea,.dp-field select{background:#04090f;border:1px solid rgba(255,255,255,0.08);border-radius:9px;color:white;font-family:'Inter',sans-serif;font-size:0.87rem;font-weight:500;padding:9px 12px;width:100%;outline:none;transition:all 0.2s;resize:vertical}
+        .dp-field input:focus,.dp-field textarea:focus,.dp-field select:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(0,212,255,0.08)}
+        .dp-field textarea{min-height:72px;line-height:1.55}
+        .dp-field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 5 5-5' stroke='%234a6fa5' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-color:#04090f;cursor:pointer}
+        .dp-field select option{background:#04090f}
+        /* Color */
+        .dp-color-row{display:flex;align-items:center;gap:10px;background:#04090f;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:9px 13px;margin-bottom:7px;transition:border-color 0.2s}
+        .dp-color-row:hover{border-color:rgba(0,212,255,0.2)}
+        .dp-color-swatch{width:30px;height:30px;border-radius:7px;border:2px solid rgba(255,255,255,0.12);cursor:pointer;flex-shrink:0;padding:0}
+        .dp-color-name{font-size:0.83rem;font-weight:600;flex:1}
+        .dp-color-hex{font-size:0.75rem;color:var(--text-muted);font-family:monospace;cursor:pointer}
+        /* Badges */
+        .dp-badge-list{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px;min-height:36px}
+        .dp-badge-item{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:5px 12px;font-size:0.76rem;transition:all 0.2s}
+        .dp-badge-item:hover{border-color:rgba(255,80,80,0.3)}
+        .dp-badge-del{background:none;border:none;color:#ff8080;cursor:pointer;font-size:1rem;padding:0;line-height:1;transition:color 0.2s}
+        .dp-badge-del:hover{color:#ff4444}
+        .dp-badge-add-row{display:flex;gap:8px}
+        .dp-badge-add-row input{flex:1;background:#04090f;border:1px solid rgba(255,255,255,0.08);border-radius:9px;color:white;font-family:'Inter',sans-serif;font-size:0.85rem;padding:9px 12px;outline:none;transition:all 0.2s}
+        .dp-badge-add-row input:focus{border-color:var(--accent)}
+        /* Stats boxes */
+        .dp-stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+        .dp-stat-box{background:#04090f;border:1px solid rgba(255,255,255,0.06);border-radius:11px;padding:14px;text-align:center}
+        .dp-stat-val{font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:800;color:var(--accent);line-height:1}
+        .dp-stat-lbl{font-size:0.62rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;margin-top:4px}
+        /* Buttons */
+        .dp-btn-cyan{background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.25);color:var(--accent);border-radius:9px;font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;padding:9px 16px;cursor:pointer;transition:all 0.2s;white-space:nowrap}
+        .dp-btn-cyan:hover{background:rgba(0,212,255,0.2)}
+        .dp-btn-red{background:rgba(255,80,80,0.08);border:1px solid rgba(255,80,80,0.2);color:#ff6464;border-radius:9px;font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;padding:9px 16px;cursor:pointer;transition:all 0.2s}
+        .dp-btn-red:hover{background:rgba(255,80,80,0.18)}
+        .dp-btn-green{background:rgba(0,255,159,0.08);border:1px solid rgba(0,255,159,0.2);color:var(--accent2);border-radius:9px;font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;padding:9px 16px;cursor:pointer;transition:all 0.2s}
+        .dp-btn-green:hover{background:rgba(0,255,159,0.18)}
+        /* Danger zone */
+        .dp-danger{background:rgba(255,68,68,0.04);border:1px solid rgba(255,68,68,0.18);border-radius:12px;padding:16px}
+        .dp-danger p{font-size:0.8rem;color:var(--text-secondary);margin-bottom:12px;line-height:1.5}
+        /* PW change */
+        .dp-pw-box{background:rgba(245,158,11,0.04);border:1px solid rgba(245,158,11,0.18);border-radius:12px;padding:16px}
+        .dp-pw-box p{font-size:0.78rem;color:#d4a847;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+        /* API status */
+        .dp-api-row{display:flex;align-items:center;justify-content:space-between;background:#04090f;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:12px 14px;margin-bottom:8px}
+        .dp-api-info{display:flex;flex-direction:column;gap:2px}
+        .dp-api-name{font-size:0.82rem;font-weight:600;color:white}
+        .dp-api-url{font-size:0.7rem;color:var(--text-muted);font-family:monospace}
+        .dp-api-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+        .dp-api-dot.on{background:#00ff9f;box-shadow:0 0 6px #00ff9f}
+        .dp-api-dot.off{background:#ff4444;box-shadow:0 0 6px #ff4444}
+        .dp-api-dot.pending{background:#f59e0b;box-shadow:0 0 6px #f59e0b;animation:blink 1s ease infinite}
+        @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+        /* Actions */
+        .dp-actions{display:flex;gap:8px;padding:14px 22px;border-top:1px solid rgba(255,255,255,0.06);flex-shrink:0;background:rgba(0,0,0,0.3);align-items:center}
+        .dp-save{background:linear-gradient(135deg,var(--accent2),#009955);border:none;border-radius:11px;color:#060d1a;font-family:'Inter',sans-serif;font-size:0.88rem;font-weight:800;padding:12px 26px;cursor:pointer;transition:all 0.2s;flex:1}
+        .dp-save:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,255,159,0.25)}
+        .dp-discard{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:11px;color:var(--text-secondary);font-family:'Inter',sans-serif;font-size:0.88rem;font-weight:600;padding:12px 18px;cursor:pointer;transition:all 0.2s}
+        .dp-discard:hover{background:rgba(255,255,255,0.08);color:white}
+        .dp-status{padding:8px 14px;border-radius:9px;font-size:0.8rem;font-weight:600;display:none;white-space:nowrap}
+        .dp-status.ok{display:block;background:rgba(0,255,159,0.08);border:1px solid rgba(0,255,159,0.2);color:var(--accent2)}
+        .dp-status.err{display:block;background:rgba(255,68,68,0.08);border:1px solid rgba(255,68,68,0.2);color:#ff6464}
+        @media(max-width:600px){
+          .dp-panel-wrap{width:98%;max-height:96vh;border-radius:16px}
+          .dp-g4{grid-template-columns:1fr 1fr}
+          .dp-stats-row{grid-template-columns:1fr 1fr}
+          .dp-actions{flex-wrap:wrap}
+          .dp-save{flex:unset;width:100%}
+        }
+
     </style>
 </head>
 <body>
+<canvas id="particleCanvas"></canvas>
 
 <!-- HEADER -->
 <header>
-    <div class="header-tag">🌍 Deep Learning Climate Research</div>
-    <h1>Regional Climate<br>Change Predictions</h1>
-    <p>A hybrid CNN-LSTM-Attention architecture analyzing temperature anomalies, CO₂ concentrations, and sea-level changes across 6 continents from 1959 to 2100.</p>
+    <div class="pulse-ring"></div>
+    <div class="pulse-ring"></div>
+    <div class="pulse-ring"></div>
+    <div class="header-tag" id="siteTagline">🌍 Deep Learning Climate Research</div>
+    <h1 id="siteTitle">Regional Climate<br>Change Predictions</h1>
+    <p id="siteDesc">A hybrid CNN-LSTM-Attention architecture analyzing temperature anomalies, CO₂ concentrations, and sea-level changes across 6 continents from 1959 to 2100.</p>
     <div class="badges">
         <span class="badge">NASA GISS</span>
         <span class="badge">NOAA</span>
@@ -431,7 +912,7 @@
 <div class="container">
 
     <!-- STATS -->
-    <div class="stats-grid" id="statsGrid">
+    <div class="stats-grid reveal" id="statsGrid">
         <div class="stat-card">
             <h3>Fastest Warming Region 2100</h3>
             <div class="value" id="fastestRegion">...</div>
@@ -449,13 +930,82 @@
         </div>
     </div>
 
+    <!-- RESEARCH PANEL -->
+    <div class="section-header">
+        <div class="section-dot" style="background:#a78bfa;box-shadow:0 0 10px #a78bfa"></div>
+        <div class="section-title">Climate Research Tool</div>
+        <div class="section-line"></div>
+    </div>
+
+    <div class="research-panel reveal">
+        <div class="research-title">
+            🔬 Year-Specific Climate Prediction
+            <span class="rt-badge">Hugging Face API</span>
+        </div>
+        <p class="research-subtitle">
+            Enter any year between 2025–2100 and select a region to get CNN-LSTM-Attention model predictions.<br>
+            Results show projected temperature anomaly, risk level, and comparison across all continents.
+        </p>
+
+        <div class="research-input-row">
+            <div class="research-input-group">
+                <label>Target Year</label>
+                <input class="research-year-input" id="researchYear" type="number"
+                       min="2025" max="2100" placeholder="e.g. 2085"
+                       oninput="onResearchInput()"/>
+            </div>
+            <div class="research-input-group">
+                <label>Focus Region</label>
+                <select class="research-region-select" id="researchRegion">
+                    <option value="all">🌍 All Regions</option>
+                    <option value="Africa">Africa</option>
+                    <option value="Asia">Asia</option>
+                    <option value="Europe">Europe</option>
+                    <option value="NorthAmerica">North America</option>
+                    <option value="SouthAmerica">South America</option>
+                    <option value="Oceania">Oceania</option>
+                </select>
+            </div>
+            <button class="research-btn" id="researchBtn" onclick="runResearch()">
+                🚀 Run Prediction
+                <span class="coming-soon-tip">⚡ Connects to HF API — coming soon</span>
+            </button>
+        </div>
+
+        <!-- API Not Connected Notice -->
+        <div class="research-api-notice">
+            <span class="ran-icon">⚡</span>
+            <div class="ran-text">
+                <strong>API not connected yet.</strong> Once the model is uploaded to Hugging Face,
+                this panel will run live CNN-LSTM-Attention predictions for any year you enter.
+                Results will appear below in real-time.
+            </div>
+        </div>
+
+        <!-- Results -->
+        <div class="research-results" id="researchResults">
+            <div class="research-results-header">
+                <span class="research-results-title">Prediction Results</span>
+                <span class="research-year-tag" id="researchYearTag">Year 2085</span>
+            </div>
+            <!-- Summary row -->
+            <div class="res-summary-row" id="resSummaryRow"></div>
+            <!-- Bar chart -->
+            <div class="res-chart-wrap">
+                <canvas id="researchChart" height="90"></canvas>
+            </div>
+            <!-- Region cards -->
+            <div class="research-cards-grid" id="researchCards"></div>
+        </div>
+    </div>
+
     <!-- HISTORICAL -->
     <div class="section-header">
         <div class="section-dot"></div>
         <div class="section-title">Historical Temperature Anomalies (1959–2020)</div>
         <div class="section-line"></div>
     </div>
-    <div class="chart-card">
+    <div class="chart-card reveal">
         <canvas id="historicalChart"></canvas>
     </div>
 
@@ -470,7 +1020,7 @@
         <button class="btn btn-green" onclick="updateProjectionChart(2050, this)">2050</button>
         <button class="btn btn-green" onclick="updateProjectionChart(2100, this)">2100</button>
     </div>
-    <div class="chart-card">
+    <div class="chart-card reveal">
         <canvas id="projectionChart"></canvas>
     </div>
 
@@ -480,7 +1030,7 @@
         <div class="section-title">2100 Projections vs IPCC Reference (2.7°C)</div>
         <div class="section-line"></div>
     </div>
-    <div class="ipcc-bar" id="ipccBars"></div>
+    <div class="ipcc-bar reveal" id="ipccBars"></div>
 
     <!-- TABLE -->
     <div class="section-header">
@@ -488,7 +1038,7 @@
         <div class="section-title">Complete Projection Data</div>
         <div class="section-line"></div>
     </div>
-    <div class="table-container">
+    <div class="table-container reveal">
         <table>
             <thead>
                 <tr>
@@ -506,16 +1056,257 @@
 
     <!-- FOOTER -->
     <footer>
-        <div class="footer-name">Bekir Yıldırım</div>
-        <div class="footer-role">Deep Learning Researcher · Climate Science</div>
+        <div class="footer-name" id="footerName">Bekir Yıldırım</div>
+        <div class="footer-role" id="footerRole">Deep Learning Researcher · Climate Science</div>
         <div class="footer-divider"></div>
-        <div class="footer-tech">
+        <div class="footer-tech" id="footerTech">
             Built with PyTorch · CNN-LSTM-Attention Architecture · Optuna Hyperparameter Optimization<br>
             Data Sources: NASA GISS · NOAA Climate at a Glance · Our World in Data<br>
             Model Performance: R² 0.965 – 0.997 across all variables
         </div>
+        <button class="dev-trigger" onclick="openDevPanel()" title="Developer Panel">⚙</button>
     </footer>
 
+</div>
+
+<!-- DEVELOPER PANEL — ULTIMATE -->
+<div class="dev-overlay" id="devOverlay">
+ <div class="dev-panel">
+
+  <!-- Header -->
+  <div class="dp-header">
+   <div class="dp-header-left">
+    <div class="dp-logo">⚙</div>
+    <div>
+     <div class="dp-title">Developer Panel</div>
+     <div class="dp-subtitle">Full Site Control</div>
+    </div>
+    <div class="dp-badges">
+     <span class="dp-badge">ADMIN</span>
+     <span class="dp-badge warn" id="dp-api-badge">API: OFF</span>
+    </div>
+   </div>
+   <button class="dp-close" onclick="closeDevPanel()">✕ Close</button>
+  </div>
+
+  <!-- LOGIN -->
+  <div class="dp-login" id="devLogin">
+   <div class="dp-lock">🔐</div>
+   <h3>Restricted Access</h3>
+   <p>This panel gives full control over the site. Enter the developer password to continue.</p>
+   <input class="dp-pw-input" id="devPassword" type="password" placeholder="••••••"
+          onkeydown="if(event.key==='Enter') dpCheckPassword()"/>
+   <br/>
+   <button class="dp-unlock" onclick="dpCheckPassword()">Unlock Panel</button>
+   <div class="dp-login-err" id="loginError">❌ Incorrect password</div>
+  </div>
+
+  <!-- EDITOR -->
+  <div class="dp-editor" id="devEditor">
+
+   <!-- Tabs -->
+   <div class="dp-tabs">
+    <button class="dp-tab active" onclick="dpTab('data',this)"><span class="dp-tab-icon">📊</span>Data</button>
+    <button class="dp-tab" onclick="dpTab('header',this)"><span class="dp-tab-icon">🏷</span>Header</button>
+    <button class="dp-tab" onclick="dpTab('footer',this)"><span class="dp-tab-icon">📄</span>Footer</button>
+    <button class="dp-tab" onclick="dpTab('colors',this)"><span class="dp-tab-icon">🎨</span>Colors</button>
+    <button class="dp-tab" onclick="dpTab('charts',this)"><span class="dp-tab-icon">📈</span>Charts</button>
+    <button class="dp-tab" onclick="dpTab('api',this)"><span class="dp-tab-icon">🔌</span>API</button>
+    <button class="dp-tab" onclick="dpTab('info',this)"><span class="dp-tab-icon">📋</span>Info</button>
+    <button class="dp-tab" onclick="dpTab('settings',this)"><span class="dp-tab-icon">⚙</span>Settings</button>
+   </div>
+
+   <!-- Content -->
+   <div class="dp-content">
+
+    <!-- ── DATA ── -->
+    <div class="dp-panel active" id="dp-data">
+     <div class="dp-sec">Edit All Regional Projections</div>
+     <div id="dpRegionCards"></div>
+    </div>
+
+    <!-- ── HEADER ── -->
+    <div class="dp-panel" id="dp-header">
+     <div class="dp-sec">Page Header</div>
+     <div class="dp-card">
+      <div class="dp-g1">
+       <div class="dp-field"><label>Top Tagline</label>
+        <input type="text" id="dp-tagline" value="🌍 Deep Learning Climate Research"/></div>
+       <div class="dp-field"><label>Main Title</label>
+        <input type="text" id="dp-title" value="Regional Climate Change Predictions"/></div>
+       <div class="dp-field"><label>Subtitle Description</label>
+        <textarea id="dp-desc">A hybrid CNN-LSTM-Attention architecture analyzing temperature anomalies, CO₂ concentrations, and sea-level changes across 6 continents from 1959 to 2100.</textarea></div>
+      </div>
+     </div>
+     <div class="dp-sec">Header Badges</div>
+     <div class="dp-card">
+      <div class="dp-badge-list" id="dpBadgeList"></div>
+      <div class="dp-badge-add-row">
+       <input type="text" id="dpNewBadge" placeholder="New badge text..." onkeydown="if(event.key==='Enter') dpAddBadge()"/>
+       <button class="dp-btn-cyan" onclick="dpAddBadge()">+ Add</button>
+      </div>
+     </div>
+    </div>
+
+    <!-- ── FOOTER ── -->
+    <div class="dp-panel" id="dp-footer">
+     <div class="dp-sec">Footer Content</div>
+     <div class="dp-card">
+      <div class="dp-g1">
+       <div class="dp-field"><label>Your Name</label>
+        <input type="text" id="dp-fname" value="Bekir Yıldırım"/></div>
+       <div class="dp-field"><label>Role / Title</label>
+        <input type="text" id="dp-frole" value="Deep Learning Researcher · Climate Science"/></div>
+       <div class="dp-field"><label>Tech Description</label>
+        <textarea id="dp-ftech" style="min-height:100px">Built with PyTorch · CNN-LSTM-Attention Architecture · Optuna Hyperparameter Optimization
+Data Sources: NASA GISS · NOAA Climate at a Glance · Our World in Data
+Model Performance: R² 0.965 – 0.997 across all variables</textarea></div>
+      </div>
+     </div>
+    </div>
+
+    <!-- ── COLORS ── -->
+    <div class="dp-panel" id="dp-colors">
+     <div class="dp-sec">Region Colors</div>
+     <div class="dp-card" id="dpColorRegions"></div>
+     <div class="dp-sec">Site Accent Colors</div>
+     <div class="dp-card">
+      <div class="dp-color-row">
+       <input type="color" class="dp-color-swatch" id="col-accent" value="#00d4ff"
+              oninput="dpPreviewColor('--accent',this.value,'col-accent-hex')"/>
+       <span class="dp-color-name">Primary Accent (Cyan)</span>
+       <span class="dp-color-hex" id="col-accent-hex">#00d4ff</span>
+      </div>
+      <div class="dp-color-row">
+       <input type="color" class="dp-color-swatch" id="col-accent2" value="#00ff9f"
+              oninput="dpPreviewColor('--accent2',this.value,'col-accent2-hex')"/>
+       <span class="dp-color-name">Secondary Accent (Green)</span>
+       <span class="dp-color-hex" id="col-accent2-hex">#00ff9f</span>
+      </div>
+      <div class="dp-color-row">
+       <input type="color" class="dp-color-swatch" id="col-accent3" value="#ff6b35"
+              oninput="dpPreviewColor('--accent3',this.value,'col-accent3-hex')"/>
+       <span class="dp-color-name">Highlight Accent (Orange)</span>
+       <span class="dp-color-hex" id="col-accent3-hex">#ff6b35</span>
+      </div>
+     </div>
+    </div>
+
+    <!-- ── CHARTS ── -->
+    <div class="dp-panel" id="dp-charts">
+     <div class="dp-sec">Chart Settings</div>
+     <div class="dp-card">
+      <div class="dp-g2">
+       <div class="dp-field"><label>IPCC Reference Line (°C)</label>
+        <input type="number" step="0.1" id="dp-ipcc" value="2.7"/></div>
+       <div class="dp-field"><label>Chart Line Tension (0–1)</label>
+        <input type="number" step="0.1" min="0" max="1" id="dp-tension" value="0.4"/></div>
+       <div class="dp-field"><label>Default Projection Year</label>
+        <select id="dp-defyear">
+         <option value="2030">2030</option>
+         <option value="2050">2050</option>
+         <option value="2100">2100</option>
+        </select></div>
+       <div class="dp-field"><label>Historical Chart Type</label>
+        <select id="dp-charttype">
+         <option value="line">Line</option>
+         <option value="bar">Bar</option>
+        </select></div>
+      </div>
+     </div>
+     <div class="dp-sec">Research Panel</div>
+     <div class="dp-card">
+      <div class="dp-g2">
+       <div class="dp-field"><label>Min Year</label>
+        <input type="number" id="dp-minyear" value="2025"/></div>
+       <div class="dp-field"><label>Max Year</label>
+        <input type="number" id="dp-maxyear" value="2100"/></div>
+      </div>
+     </div>
+    </div>
+
+    <!-- ── API ── -->
+    <div class="dp-panel" id="dp-api">
+     <div class="dp-sec">Connection Status</div>
+     <div class="dp-card">
+      <div class="dp-api-row">
+       <div class="dp-api-info">
+        <span class="dp-api-name">Hugging Face Inference API</span>
+        <span class="dp-api-url" id="dp-hf-url-display">Not configured</span>
+       </div>
+       <div class="dp-api-dot off" id="dp-hf-dot"></div>
+      </div>
+      <div class="dp-api-row">
+       <div class="dp-api-info">
+        <span class="dp-api-name">Railway Backend</span>
+        <span class="dp-api-url" id="dp-rail-url-display">window.location.origin</span>
+       </div>
+       <div class="dp-api-dot pending" id="dp-rail-dot"></div>
+      </div>
+     </div>
+     <div class="dp-sec">Configure HF API</div>
+     <div class="dp-card">
+      <div class="dp-g1">
+       <div class="dp-field"><label>Hugging Face Model URL</label>
+        <input type="text" id="dp-hf-url" placeholder="https://api-inference.huggingface.co/models/YOUR_MODEL"/></div>
+       <div class="dp-field"><label>API Token (optional)</label>
+        <input type="password" id="dp-hf-token" placeholder="hf_..."/></div>
+      </div>
+      <br/>
+      <button class="dp-btn-cyan" onclick="dpTestAPI()" style="width:100%">🔌 Test Connection</button>
+      <div id="dp-api-test-result" style="margin-top:10px;font-size:0.8rem;display:none"></div>
+     </div>
+    </div>
+
+    <!-- ── INFO ── -->
+    <div class="dp-panel" id="dp-info">
+     <div class="dp-sec">Live Site Statistics</div>
+     <div class="dp-stats-row" id="dpStatsRow"></div>
+     <div class="dp-sec">Projection Summary Table</div>
+     <div class="dp-card" id="dpSummaryTable"></div>
+     <div class="dp-sec">Hottest Region per Year</div>
+     <div class="dp-card" id="dpHottestList"></div>
+    </div>
+
+    <!-- ── SETTINGS ── -->
+    <div class="dp-panel" id="dp-settings">
+     <div class="dp-sec">Change Password</div>
+     <div class="dp-pw-box">
+      <p>⚠️ Write your new password down — there is no recovery.</p>
+      <div class="dp-g1">
+       <div class="dp-field"><label>Current Password</label>
+        <input type="password" id="dp-pw-cur" placeholder="Current password"/></div>
+       <div class="dp-field"><label>New Password</label>
+        <input type="password" id="dp-pw-new" placeholder="New password (min 4 chars)"/></div>
+       <div class="dp-field"><label>Confirm New Password</label>
+        <input type="password" id="dp-pw-conf" placeholder="Confirm new password"/></div>
+      </div>
+      <br/>
+      <button class="dp-btn-cyan" onclick="dpChangePW()" style="width:100%;padding:11px">🔑 Change Password</button>
+     </div>
+     <div class="dp-sec">Danger Zone</div>
+     <div class="dp-danger">
+      <p>⚠️ Reset ALL projection data back to original model output values. This cannot be undone.</p>
+      <button class="dp-btn-red" onclick="dpResetAll()" style="width:100%;padding:11px">🔄 Reset All Data to Defaults</button>
+     </div>
+     <div class="dp-sec">Export / Import</div>
+     <div class="dp-card" style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="dp-btn-green" onclick="dpExportData()" style="flex:1;padding:11px">📥 Export Data as JSON</button>
+      <button class="dp-btn-cyan" onclick="dpImportData()" style="flex:1;padding:11px">📤 Import JSON Data</button>
+     </div>
+    </div>
+
+   </div><!-- /dp-content -->
+
+   <!-- Actions Bar -->
+   <div class="dp-actions">
+    <button class="dp-save" onclick="dpSaveAll()">💾 Save & Apply All</button>
+    <button class="dp-discard" onclick="dpDiscard()">↩ Discard</button>
+    <div class="dp-status" id="devStatus"></div>
+   </div>
+
+  </div><!-- /dp-editor -->
+ </div>
 </div>
 
 <script>
@@ -532,13 +1323,23 @@ const COLORS = {
 
 let summaryData = {}, historicalData = {};
 
-async function loadData() {
-    const [summary, historical] = await Promise.all([
-        fetch(`${API}/summary`).then(r => r.json()),
-        fetch(`${API}/historical`).then(r => r.json())
-    ]);
-    summaryData    = summary;
-    historicalData = historical;
+function loadData() {
+    summaryData = {
+        "Africa":       { current_2020: 1.01, projected_2030: 1.68, projected_2050: 2.64, projected_2100: 5.95 },
+        "Asia":         { current_2020: 1.64, projected_2030: 2.52, projected_2050: 4.12, projected_2100: 9.80 },
+        "Europe":       { current_2020: 1.75, projected_2030: 2.51, projected_2050: 4.45, projected_2100: 11.69 },
+        "NorthAmerica": { current_2020: 1.23, projected_2030: 1.78, projected_2050: 2.65, projected_2100: 5.38 },
+        "SouthAmerica": { current_2020: 0.89, projected_2030: 1.62, projected_2050: 2.52, projected_2100: 5.62 },
+        "Oceania":      { current_2020: 0.76, projected_2030: 1.34, projected_2050: 2.05, projected_2100: 4.43 },
+    };
+    historicalData = {
+        "Africa":       { years: [1959,1960,1961,1962,1963,1964,1965,1966,1967,1968,1969,1970,1971,1972,1973,1974,1975,1976,1977,1978,1979,1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020], temps: [0.10,0.08,0.12,0.05,0.03,0.02,0.07,0.11,0.09,0.08,0.14,0.10,0.06,0.15,0.22,0.10,0.09,0.15,0.22,0.18,0.21,0.26,0.30,0.20,0.32,0.22,0.18,0.28,0.38,0.34,0.25,0.40,0.38,0.28,0.30,0.38,0.45,0.40,0.52,0.62,0.42,0.48,0.52,0.60,0.65,0.58,0.68,0.62,0.72,0.60,0.70,0.80,0.70,0.75,0.78,0.80,0.92,1.01,0.85,0.88,0.92,1.01] },
+        "Asia":         { years: [1959,1960,1961,1962,1963,1964,1965,1966,1967,1968,1969,1970,1971,1972,1973,1974,1975,1976,1977,1978,1979,1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020], temps: [0.08,0.12,0.06,0.04,0.02,0.00,0.08,0.10,0.14,0.10,0.18,0.12,0.08,0.18,0.25,0.12,0.10,0.18,0.28,0.22,0.26,0.32,0.38,0.25,0.40,0.28,0.22,0.35,0.48,0.42,0.30,0.52,0.48,0.35,0.38,0.48,0.58,0.50,0.65,0.78,0.52,0.60,0.65,0.75,0.82,0.72,0.85,0.78,0.90,0.75,0.88,1.00,0.88,0.95,0.98,1.02,1.18,1.30,1.10,1.15,1.22,1.64] },
+        "Europe":       { years: [1959,1960,1961,1962,1963,1964,1965,1966,1967,1968,1969,1970,1971,1972,1973,1974,1975,1976,1977,1978,1979,1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020], temps: [0.12,0.05,0.10,0.02,-0.05,-0.08,0.05,0.08,0.10,0.06,0.15,0.08,0.04,0.12,0.20,0.08,0.05,0.10,0.22,0.15,0.18,0.28,0.35,0.18,0.35,0.20,0.15,0.25,0.42,0.38,0.28,0.55,0.45,0.32,0.35,0.45,0.55,0.42,0.60,0.72,0.48,0.55,0.60,0.70,0.78,0.68,0.80,0.75,0.88,0.70,0.82,0.95,0.82,0.90,0.92,0.98,1.15,1.28,1.05,1.10,1.18,1.75] },
+        "NorthAmerica": { years: [1959,1960,1961,1962,1963,1964,1965,1966,1967,1968,1969,1970,1971,1972,1973,1974,1975,1976,1977,1978,1979,1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020], temps: [0.05,0.08,0.04,0.02,-0.02,-0.04,0.03,0.06,0.08,0.04,0.10,0.06,0.02,0.08,0.15,0.06,0.04,0.08,0.16,0.12,0.14,0.20,0.25,0.14,0.26,0.16,0.12,0.20,0.30,0.28,0.20,0.38,0.32,0.24,0.26,0.32,0.40,0.32,0.44,0.52,0.36,0.40,0.44,0.52,0.56,0.50,0.58,0.54,0.62,0.52,0.60,0.68,0.60,0.65,0.66,0.70,0.82,0.90,0.76,0.80,0.84,1.23] },
+        "SouthAmerica": { years: [1959,1960,1961,1962,1963,1964,1965,1966,1967,1968,1969,1970,1971,1972,1973,1974,1975,1976,1977,1978,1979,1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020], temps: [0.04,0.06,0.03,0.01,-0.01,-0.03,0.02,0.04,0.06,0.03,0.08,0.04,0.01,0.06,0.12,0.04,0.03,0.06,0.12,0.09,0.11,0.16,0.20,0.11,0.21,0.13,0.09,0.16,0.24,0.22,0.16,0.30,0.26,0.18,0.20,0.26,0.32,0.25,0.35,0.42,0.28,0.32,0.35,0.41,0.45,0.40,0.46,0.42,0.50,0.41,0.48,0.55,0.48,0.52,0.53,0.56,0.66,0.72,0.60,0.64,0.68,0.89] },
+        "Oceania":      { years: [1959,1960,1961,1962,1963,1964,1965,1966,1967,1968,1969,1970,1971,1972,1973,1974,1975,1976,1977,1978,1979,1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020], temps: [0.03,0.05,0.02,0.00,-0.02,-0.04,0.01,0.03,0.05,0.02,0.07,0.03,0.00,0.05,0.10,0.03,0.02,0.05,0.10,0.07,0.09,0.13,0.16,0.09,0.17,0.10,0.07,0.13,0.20,0.18,0.13,0.24,0.20,0.15,0.16,0.21,0.26,0.20,0.28,0.34,0.22,0.26,0.28,0.33,0.36,0.32,0.37,0.34,0.40,0.33,0.38,0.44,0.38,0.42,0.43,0.45,0.52,0.58,0.48,0.51,0.54,0.76] },
+    };
     updateStats();
     buildHistoricalChart();
     updateProjectionChart(2030, document.querySelector(".btn-green.active"));
@@ -711,7 +1512,624 @@ function buildTable() {
     }).join("");
 }
 
+// ── PARTICLE SYSTEM ──────────────────────────────────────────
+(function() {
+    const canvas = document.getElementById("particleCanvas");
+    const ctx = canvas.getContext("2d");
+    let W, H, particles = [];
+
+    function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+    resize();
+    window.addEventListener("resize", resize);
+
+    function Particle() {
+        this.x    = Math.random() * (typeof W !== 'undefined' ? W : 1200);
+        this.y    = Math.random() * (typeof H !== 'undefined' ? H : 800);
+        this.r    = Math.random() * 1.5 + 0.3;
+        this.vx   = (Math.random() - 0.5) * 0.25;
+        this.vy   = (Math.random() - 0.5) * 0.25 - 0.08;
+        this.life = Math.random();
+        this.speed = Math.random() * 0.018 + 0.004;
+        this.color = Math.random() > 0.55 ? "0,212,255" : Math.random() > 0.5 ? "0,255,159" : "100,160,255";
+    }
+    Particle.prototype.update = function() {
+        this.x += this.vx; this.y += this.vy; this.life += this.speed;
+        if (this.life > 1 || this.x < 0 || this.x > W || this.y < 0) {
+            this.x = Math.random() * W; this.y = H + 10;
+            this.life = 0;
+        }
+    };
+    Particle.prototype.draw = function() {
+        const a = Math.sin(this.life * Math.PI) * 0.55;
+        ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(" + this.color + "," + a + ")"; ctx.fill();
+    };
+
+    for (let i = 0; i < 75; i++) particles.push(new Particle());
+
+    function drawLines() {
+        for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const d  = Math.sqrt(dx*dx + dy*dy);
+                if (d < 110) {
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.strokeStyle = "rgba(0,212,255," + ((1 - d/110) * 0.07) + ")";
+                    ctx.lineWidth = 0.5; ctx.stroke();
+                }
+            }
+        }
+    }
+
+    function loop() {
+        ctx.clearRect(0, 0, W, H);
+        drawLines();
+        particles.forEach(function(p) { p.update(); p.draw(); });
+        requestAnimationFrame(loop);
+    }
+    loop();
+})();
+
+// ── SCROLL REVEAL ────────────────────────────────────────────
+(function() {
+    const io = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e, i) {
+            if (e.isIntersecting) {
+                setTimeout(function() { e.target.classList.add("visible"); }, i * 80);
+                io.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.08 });
+    document.querySelectorAll(".reveal").forEach(function(el) { io.observe(el); });
+})();
+
+// ── COUNTER ANIMATION ────────────────────────────────────────
+function animateValue(el, target, suffix, duration) {
+    var start = performance.now();
+    function step(now) {
+        var p = Math.min((now - start) / duration, 1);
+        var ease = 1 - Math.pow(1 - p, 3);
+        el.textContent = "+" + (target * ease).toFixed(2) + suffix;
+        if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+}
+
+// ── RESEARCH PANEL ───────────────────────────────────────────
+// TODO: Replace runResearch() body with real HF API call when ready
+// API endpoint will be: https://api-inference.huggingface.co/models/YOUR_MODEL
+// Pass: { year: int, region: string } → returns { region: temp_anomaly, ... }
+
+function onResearchInput() {
+    // Ready for future use — validate year range
+    const yr = parseInt(document.getElementById("researchYear").value);
+    const btn = document.getElementById("researchBtn");
+    // Button stays disabled until HF API is connected
+}
+
+function runResearch() {
+    // ── FUTURE: Replace this entire function with real API call ──
+    // const year   = document.getElementById("researchYear").value;
+    // const region = document.getElementById("researchRegion").value;
+    // const res    = await fetch("HF_API_URL", { method:"POST", body: JSON.stringify({year, region}) });
+    // const data   = await res.json();
+    // showResearchResults(year, data);
+
+    // For now: show interpolated demo results from hardcoded data
+    const year = parseInt(document.getElementById("researchYear").value);
+    if (!year || year < 2025 || year > 2100) {
+        document.getElementById("researchYear").style.borderColor = "#ff4444";
+        setTimeout(() => document.getElementById("researchYear").style.borderColor = "", 1000);
+        return;
+    }
+
+    // Linear interpolation between known data points for demo
+    const t = (year - 2020) / (2100 - 2020);
+    const demoResults = {};
+    Object.entries(summaryData).forEach(([region, d]) => {
+        // Interpolate: 2020 → 2030 → 2050 → 2100
+        let val;
+        if (year <= 2030) {
+            const tt = (year - 2020) / 10;
+            val = d.current_2020 + (d.projected_2030 - d.current_2020) * tt;
+        } else if (year <= 2050) {
+            const tt = (year - 2030) / 20;
+            val = d.projected_2030 + (d.projected_2050 - d.projected_2030) * tt;
+        } else {
+            const tt = (year - 2050) / 50;
+            val = d.projected_2050 + (d.projected_2100 - d.projected_2050) * tt;
+        }
+        demoResults[region] = parseFloat(val.toFixed(2));
+    });
+
+    showResearchResults(year, demoResults);
+}
+
+function showResearchResults(year, data) {
+    document.getElementById("researchYearTag").textContent = "Year " + year;
+    const container = document.getElementById("researchCards");
+    const maxVal = Math.max(...Object.values(data));
+
+    container.innerHTML = Object.entries(data).map(([region, temp]) => {
+        const color   = COLORS[region] || "#00d4ff";
+        const pct     = ((temp / maxVal) * 100).toFixed(1);
+        const risk    = temp >= 8  ? {label:"Extreme",  color:"#ff4444"} :
+                        temp >= 5  ? {label:"Very High", color:"#ff8c00"} :
+                        temp >= 3  ? {label:"High",      color:"#ffd700"} :
+                                     {label:"Moderate",  color:"#00ff9f"};
+        return `
+        <div class="research-result-card" style="border-color:${color}22">
+            <div style="position:absolute;top:0;left:0;right:0;height:3px;background:${color};border-radius:14px 14px 0 0"></div>
+            <div class="rrc-region" style="color:${color}">${region}</div>
+            <div class="rrc-temp" style="color:${color}">+${temp}</div>
+            <div class="rrc-unit">°C anomaly</div>
+            <div class="rrc-bar-track">
+                <div class="rrc-bar-fill" style="width:${pct}%;background:${color}"></div>
+            </div>
+            <div class="rrc-risk" style="color:${risk.color}">${risk.label}</div>
+        </div>`;
+    }).join("");
+
+    const resultsEl = document.getElementById("researchResults");
+    resultsEl.classList.add("visible");
+    // Animate bars in
+    setTimeout(() => {
+        container.querySelectorAll(".rrc-bar-fill").forEach(b => {
+            const w = b.style.width;
+            b.style.width = "0";
+            setTimeout(() => b.style.width = w, 50);
+        });
+    }, 50);
+}
+
 loadData();
+
+// Animate counter after data loads
+setTimeout(function(){
+    var el = document.getElementById("globalAvg");
+    if(el){ var v = parseFloat(el.textContent.replace("+","").replace("°C","")); if(!isNaN(v)) animateValue(el, v, "°C", 1400); }
+}, 500);
+
+
+// ── DEVELOPER PANEL — ULTIMATE ───────────────────────────────
+let DEV_PASSWORD = "bekir2025";
+let dpBadges = [];
+let resChartInst = null;
+
+const DP_DEFAULTS = {
+    Africa:       { current_2020:1.01, projected_2030:1.68, projected_2050:2.64, projected_2100:5.95 },
+    Asia:         { current_2020:1.64, projected_2030:2.52, projected_2050:4.12, projected_2100:9.80 },
+    Europe:       { current_2020:1.75, projected_2030:2.51, projected_2050:4.45, projected_2100:11.69 },
+    NorthAmerica: { current_2020:1.23, projected_2030:1.78, projected_2050:2.65, projected_2100:5.38 },
+    SouthAmerica: { current_2020:0.89, projected_2030:1.62, projected_2050:2.52, projected_2100:5.62 },
+    Oceania:      { current_2020:0.76, projected_2030:1.34, projected_2050:2.05, projected_2100:4.43 },
+};
+
+function openDevPanel() {
+    document.getElementById("devOverlay").classList.add("active");
+    setTimeout(() => document.getElementById("devPassword").focus(), 150);
+}
+function closeDevPanel() {
+    document.getElementById("devOverlay").classList.remove("active");
+    document.getElementById("devLogin").style.display = "";
+    document.getElementById("devEditor").classList.remove("active");
+    document.getElementById("devPassword").value = "";
+    document.getElementById("loginError").style.display = "none";
+}
+document.getElementById("devOverlay").addEventListener("click", function(e) {
+    if (e.target === this) closeDevPanel();
+});
+function dpCheckPassword() {
+    const pw = document.getElementById("devPassword").value;
+    const inp = document.getElementById("devPassword");
+    if (pw === DEV_PASSWORD) {
+        document.getElementById("devLogin").style.display = "none";
+        document.getElementById("devEditor").classList.add("active");
+        dpInitEditor();
+    } else {
+        inp.classList.add("shake");
+        document.getElementById("loginError").style.display = "block";
+        inp.value = "";
+        setTimeout(() => inp.classList.remove("shake"), 400);
+    }
+}
+function dpTab(name, btn) {
+    document.querySelectorAll(".dp-tab").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".dp-panel").forEach(p => p.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById("dp-" + name).classList.add("active");
+    if (name === "info") dpRefreshInfo();
+    if (name === "colors") dpBuildColors();
+}
+function dpInitEditor() {
+    dpBuildDataTab();
+    dpBuildBadges();
+    dpBuildColors();
+    dpRefreshInfo();
+    dpCheckRailway();
+}
+
+// ── DATA TAB ──
+function dpBuildDataTab() {
+    const c = document.getElementById("dpRegionCards");
+    c.innerHTML = "";
+    Object.entries(summaryData).forEach(([r, d]) => {
+        const col = COLORS[r] || "#00d4ff";
+        c.innerHTML += `<div class="dp-card">
+            <div class="dp-card-title" style="color:${col}"><span style="font-size:1.1em">●</span> ${r}</div>
+            <div class="dp-g4">
+                <div class="dp-field"><label>2020 Actual °C</label>
+                    <input type="number" step="0.01" id="dp_${r}_2020" value="${d.current_2020}"/></div>
+                <div class="dp-field"><label>2030 Proj. °C</label>
+                    <input type="number" step="0.01" id="dp_${r}_2030" value="${d.projected_2030}"/></div>
+                <div class="dp-field"><label>2050 Proj. °C</label>
+                    <input type="number" step="0.01" id="dp_${r}_2050" value="${d.projected_2050}"/></div>
+                <div class="dp-field"><label>2100 Proj. °C</label>
+                    <input type="number" step="0.01" id="dp_${r}_2100" value="${d.projected_2100}"/></div>
+            </div></div>`;
+    });
+}
+
+// ── BADGES TAB ──
+function dpBuildBadges() {
+    dpBadges = [];
+    document.querySelectorAll(".badges .badge").forEach(b => dpBadges.push(b.textContent.trim()));
+    dpRenderBadges();
+}
+function dpRenderBadges() {
+    const list = document.getElementById("dpBadgeList");
+    if (!list) return;
+    list.innerHTML = dpBadges.map((b,i) => `
+        <div class="dp-badge-item"><span>${b}</span>
+        <button class="dp-badge-del" onclick="dpRemoveBadge(${i})">×</button></div>`).join("");
+}
+function dpAddBadge() {
+    const inp = document.getElementById("dpNewBadge");
+    const v = inp.value.trim();
+    if (v) { dpBadges.push(v); dpRenderBadges(); inp.value = ""; }
+}
+function dpRemoveBadge(i) { dpBadges.splice(i,1); dpRenderBadges(); }
+
+// ── COLORS TAB ──
+function dpBuildColors() {
+    const c = document.getElementById("dpColorRegions");
+    if (!c) return;
+    c.innerHTML = "";
+    Object.entries(COLORS).forEach(([r, hex]) => {
+        c.innerHTML += `<div class="dp-color-row">
+            <input type="color" class="dp-color-swatch" value="${hex}"
+                   oninput="COLORS['${r}']=this.value;document.getElementById('dpcol-${r}').textContent=this.value"/>
+            <span class="dp-color-name">${r}</span>
+            <span class="dp-color-hex" id="dpcol-${r}">${hex}</span></div>`;
+    });
+}
+function dpPreviewColor(variable, value, hexId) {
+    document.documentElement.style.setProperty(variable, value);
+    const el = document.getElementById(hexId);
+    if (el) el.textContent = value;
+}
+
+// ── INFO TAB ──
+function dpRefreshInfo() {
+    const regions = Object.keys(summaryData);
+    const avg2100 = (regions.reduce((s,r) => s + summaryData[r].projected_2100, 0) / regions.length).toFixed(2);
+    const max2100 = Math.max(...regions.map(r => summaryData[r].projected_2100));
+    const min2100 = Math.min(...regions.map(r => summaryData[r].projected_2100));
+    const maxR = regions.find(r => summaryData[r].projected_2100 === max2100);
+    const minR = regions.find(r => summaryData[r].projected_2100 === min2100);
+    const row = document.getElementById("dpStatsRow");
+    if (row) row.innerHTML = `
+        <div class="dp-stat-box"><div class="dp-stat-val">${regions.length}</div><div class="dp-stat-lbl">Regions</div></div>
+        <div class="dp-stat-box"><div class="dp-stat-val">62</div><div class="dp-stat-lbl">Data Years</div></div>
+        <div class="dp-stat-box"><div class="dp-stat-val" style="color:#ff6b6b">+${max2100}°C</div><div class="dp-stat-lbl">Max 2100 (${maxR})</div></div>
+        <div class="dp-stat-box"><div class="dp-stat-val" style="color:var(--accent2)">+${min2100}°C</div><div class="dp-stat-lbl">Min 2100 (${minR})</div></div>`;
+    const table = document.getElementById("dpSummaryTable");
+    if (table) {
+        table.innerHTML = `<table style="width:100%;border-collapse:collapse;font-size:0.8rem">
+            <tr style="color:var(--text-muted);font-size:0.65rem;text-transform:uppercase;letter-spacing:0.08em">
+                <th style="text-align:left;padding:6px 8px">Region</th>
+                <th style="padding:6px 8px">2020</th><th style="padding:6px 8px">2030</th>
+                <th style="padding:6px 8px">2050</th><th style="padding:6px 8px">2100</th></tr>` +
+            regions.map(r => {
+                const d = summaryData[r]; const col = COLORS[r];
+                return `<tr style="border-top:1px solid rgba(255,255,255,0.04)">
+                    <td style="padding:7px 8px;font-weight:700;color:${col}">${r}</td>
+                    <td style="text-align:center;padding:7px 8px">${d.current_2020}</td>
+                    <td style="text-align:center;padding:7px 8px">${d.projected_2030}</td>
+                    <td style="text-align:center;padding:7px 8px">${d.projected_2050}</td>
+                    <td style="text-align:center;padding:7px 8px;font-weight:700;color:${col}">${d.projected_2100}</td></tr>`;
+            }).join("") + "</table>";
+    }
+    const hot = document.getElementById("dpHottestList");
+    if (hot) {
+        const years = [2030, 2050, 2100];
+        const keys = ["projected_2030","projected_2050","projected_2100"];
+        hot.innerHTML = years.map((yr,i) => {
+            const maxV = Math.max(...regions.map(r => summaryData[r][keys[i]]));
+            const maxReg = regions.find(r => summaryData[r][keys[i]] === maxV);
+            return `<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05)">
+                <span style="color:var(--text-muted);font-size:0.8rem">${yr}</span>
+                <span style="font-weight:700;color:${COLORS[maxReg]}">${maxReg}</span>
+                <span style="font-size:0.85rem;font-weight:600">+${maxV}°C</span></div>`;
+        }).join("");
+    }
+}
+
+// ── API TAB ──
+function dpCheckRailway() {
+    const dot = document.getElementById("dp-rail-dot");
+    const disp = document.getElementById("dp-rail-url-display");
+    if (disp) disp.textContent = window.location.origin;
+    fetch(window.location.origin + "/summary")
+        .then(r => r.ok ? (dot && dot.classList.replace("pending","on")) : (dot && dot.classList.replace("pending","off")))
+        .catch(() => { if(dot) { dot.classList.remove("pending"); dot.classList.add("off"); } });
+}
+function dpTestAPI() {
+    const url = document.getElementById("dp-hf-url").value.trim();
+    const result = document.getElementById("dp-api-test-result");
+    const dot = document.getElementById("dp-hf-dot");
+    if (!url) { result.style.display="block"; result.style.color="#ff6464"; result.textContent="❌ Enter a URL first"; return; }
+    result.style.display="block"; result.style.color="#f59e0b"; result.textContent="⏳ Testing connection...";
+    dot.className = "dp-api-dot pending";
+    fetch(url, { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({inputs:"test"}), signal:AbortSignal.timeout(8000) })
+        .then(r => {
+            dot.className = "dp-api-dot on";
+            document.getElementById("dp-hf-url-display").textContent = url;
+            result.style.color = "#00ff9f";
+            result.textContent = "✅ Connected! Status: " + r.status;
+        })
+        .catch(e => {
+            dot.className = "dp-api-dot off";
+            result.style.color = "#ff6464";
+            result.textContent = "❌ Failed: " + e.message;
+        });
+}
+
+// ── PASSWORD ──
+function dpChangePW() {
+    const cur = document.getElementById("dp-pw-cur").value;
+    const nw  = document.getElementById("dp-pw-new").value;
+    const cf  = document.getElementById("dp-pw-conf").value;
+    if (cur !== DEV_PASSWORD) { dpStatus("❌ Current password wrong","err"); return; }
+    if (nw.length < 4)        { dpStatus("❌ Min 4 characters","err"); return; }
+    if (nw !== cf)            { dpStatus("❌ Passwords don't match","err"); return; }
+    DEV_PASSWORD = nw;
+    ["dp-pw-cur","dp-pw-new","dp-pw-conf"].forEach(id => document.getElementById(id).value = "");
+    dpStatus("✅ Password changed!","ok");
+}
+
+// ── RESET ──
+function dpResetAll() {
+    if (!confirm("Reset ALL data to original model defaults?")) return;
+    Object.keys(DP_DEFAULTS).forEach(r => Object.assign(summaryData[r], DP_DEFAULTS[r]));
+    dpBuildDataTab();
+    dpRebuildCharts();
+    dpStatus("✅ Reset to defaults","ok");
+}
+
+// ── EXPORT / IMPORT ──
+function dpExportData() {
+    const data = JSON.stringify({ summaryData, exportedAt: new Date().toISOString() }, null, 2);
+    const blob = new Blob([data], { type:"application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "climate_data_" + new Date().toISOString().slice(0,10) + ".json";
+    a.click();
+}
+function dpImportData() {
+    const inp = document.createElement("input");
+    inp.type = "file"; inp.accept = ".json";
+    inp.onchange = e => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = ev => {
+            try {
+                const parsed = JSON.parse(ev.target.result);
+                if (parsed.summaryData) {
+                    Object.assign(summaryData, parsed.summaryData);
+                    dpBuildDataTab();
+                    dpRebuildCharts();
+                    dpStatus("✅ Data imported!","ok");
+                } else { dpStatus("❌ Invalid file format","err"); }
+            } catch(ex) { dpStatus("❌ Parse error: " + ex.message,"err"); }
+        };
+        reader.readAsText(file);
+    };
+    inp.click();
+}
+
+// ── SAVE ALL ──
+function dpSaveAll() {
+    try {
+        // Data
+        Object.keys(summaryData).forEach(r => {
+            const get = id => parseFloat(document.getElementById(id)?.value) || 0;
+            summaryData[r].current_2020   = get("dp_"+r+"_2020");
+            summaryData[r].projected_2030 = get("dp_"+r+"_2030");
+            summaryData[r].projected_2050 = get("dp_"+r+"_2050");
+            summaryData[r].projected_2100 = get("dp_"+r+"_2100");
+        });
+        // Header
+        const tagEl   = document.getElementById("siteTagline");
+        const titleEl = document.getElementById("siteTitle");
+        const descEl  = document.getElementById("siteDesc");
+        const tgVal   = document.getElementById("dp-tagline")?.value;
+        const tiVal   = document.getElementById("dp-title")?.value;
+        const deVal   = document.getElementById("dp-desc")?.value;
+        if (tagEl && tgVal)   tagEl.textContent  = tgVal;
+        if (titleEl && tiVal) titleEl.innerHTML  = tiVal;
+        if (descEl && deVal)  descEl.textContent = deVal;
+        // Badges
+        const badgesEl = document.querySelector(".badges");
+        if (badgesEl && dpBadges.length)
+            badgesEl.innerHTML = dpBadges.map(b => `<span class="badge">${b}</span>`).join("");
+        // Footer
+        const fn = document.getElementById("footerName");
+        const fr = document.getElementById("footerRole");
+        const ft = document.getElementById("footerTech");
+        const fnV = document.getElementById("dp-fname")?.value;
+        const frV = document.getElementById("dp-frole")?.value;
+        const ftV = document.getElementById("dp-ftech")?.value;
+        if (fn && fnV) fn.textContent = fnV;
+        if (fr && frV) fr.textContent = frV;
+        if (ft && ftV) ft.innerHTML   = ftV.split("\n").join("<br>");
+        // Charts
+        dpRebuildCharts();
+        dpStatus("✅ All changes saved!","ok");
+        setTimeout(() => document.getElementById("devStatus").style.display = "none", 3500);
+    } catch(e) { dpStatus("❌ " + e.message,"err"); }
+}
+function dpDiscard() {
+    dpBuildDataTab();
+    dpBuildBadges();
+    dpStatus("","");
+    document.getElementById("devStatus").style.display = "none";
+}
+function dpRebuildCharts() {
+    updateStats();
+    buildHistoricalChart();
+    updateProjectionChart(2030, document.querySelector(".btn-green.active") || document.querySelector(".btn-green"));
+    buildIPCCBars();
+    buildTable();
+}
+function dpStatus(msg, type) {
+    const s = document.getElementById("devStatus");
+    s.className = "dp-status" + (type ? " " + type : "");
+    s.textContent = msg;
+    if (msg) s.style.display = "block";
+    else s.style.display = "none";
+}
+
+// ── RESEARCH PANEL ───────────────────────────────────────────
+function onResearchInput() {}
+
+function runResearch() {
+    const year = parseInt(document.getElementById("researchYear").value);
+    const yearInp = document.getElementById("researchYear");
+    if (!year || year < 2025 || year > 2100) {
+        yearInp.style.borderColor = "#ff4444";
+        setTimeout(() => yearInp.style.borderColor = "", 1000);
+        return;
+    }
+
+    // Interpolate from known data points
+    const results = {};
+    Object.entries(summaryData).forEach(([region, d]) => {
+        let val;
+        if (year <= 2030) {
+            val = d.current_2020 + (d.projected_2030 - d.current_2020) * ((year-2020)/10);
+        } else if (year <= 2050) {
+            val = d.projected_2030 + (d.projected_2050 - d.projected_2030) * ((year-2030)/20);
+        } else {
+            val = d.projected_2050 + (d.projected_2100 - d.projected_2050) * ((year-2050)/50);
+        }
+        results[region] = parseFloat(val.toFixed(2));
+    });
+
+    showResearchResults(year, results);
+}
+
+function showResearchResults(year, data) {
+    document.getElementById("researchYearTag").textContent = "Year " + year;
+    const entries = Object.entries(data);
+    const vals    = entries.map(([,v]) => v);
+    const maxVal  = Math.max(...vals);
+    const avgVal  = (vals.reduce((a,b) => a+b, 0) / vals.length).toFixed(2);
+    const maxReg  = entries.find(([,v]) => v === maxVal)[0];
+
+    // Summary row
+    const sumRow = document.getElementById("resSummaryRow");
+    if (sumRow) sumRow.innerHTML = `
+        <div class="res-sum-box">
+            <div class="res-sum-val" style="color:var(--accent)">+${avgVal}°C</div>
+            <div class="res-sum-lbl">Global Average</div></div>
+        <div class="res-sum-box">
+            <div class="res-sum-val" style="color:#ff6b6b">+${maxVal}°C</div>
+            <div class="res-sum-lbl">Highest (${maxReg})</div></div>
+        <div class="res-sum-box">
+            <div class="res-sum-val" style="color:var(--accent2)">+${Math.min(...vals)}°C</div>
+            <div class="res-sum-lbl">Lowest</div></div>`;
+
+    // Bar chart
+    const ctx = document.getElementById("researchChart");
+    if (ctx) {
+        if (resChartInst) resChartInst.destroy();
+        resChartInst = new Chart(ctx.getContext("2d"), {
+            type: "bar",
+            data: {
+                labels: entries.map(([r]) => r),
+                datasets: [{
+                    label: "Projected Anomaly (°C)",
+                    data: entries.map(([,v]) => v),
+                    backgroundColor: entries.map(([r]) => (COLORS[r]||"#00d4ff") + "bb"),
+                    borderColor: entries.map(([r]) => COLORS[r]||"#00d4ff"),
+                    borderWidth: 2,
+                    borderRadius: 8,
+                    borderSkipped: false,
+                },{
+                    label: "IPCC Ref (2.7°C)",
+                    data: entries.map(() => 2.7),
+                    type: "line",
+                    borderColor: "#ff4444",
+                    borderDash: [5,4],
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    backgroundColor: "transparent",
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { labels: { color:"#8ab4d4", usePointStyle:true, boxWidth:10 } },
+                    tooltip: {
+                        backgroundColor:"#0d1f38", borderColor:"#1a3a5c", borderWidth:1,
+                        titleColor:"#fff", bodyColor:"#8ab4d4",
+                        callbacks: { label: ctx => " " + ctx.parsed.y.toFixed(2) + "°C" }
+                    }
+                },
+                scales: {
+                    x: { ticks:{color:"#8ab4d4"}, grid:{color:"rgba(255,255,255,0.04)"} },
+                    y: { ticks:{color:"#4a6fa5"}, grid:{color:"rgba(255,255,255,0.04)"},
+                         title:{display:true,text:"Temperature Anomaly (°C)",color:"#8ab4d4"} }
+                }
+            }
+        });
+    }
+
+    // Region cards
+    const container = document.getElementById("researchCards");
+    container.innerHTML = entries.map(([region, temp]) => {
+        const color = COLORS[region] || "#00d4ff";
+        const pct   = ((temp / maxVal) * 100).toFixed(1);
+        const risk  = temp >= 8  ? {l:"Extreme",   c:"#ff4444"} :
+                      temp >= 5  ? {l:"Very High",  c:"#ff8c00"} :
+                      temp >= 3  ? {l:"High",       c:"#ffd700"} :
+                                   {l:"Moderate",   c:"#00ff9f"};
+        return `<div class="research-result-card" style="border-color:${color}22">
+            <div style="position:absolute;top:0;left:0;right:0;height:3px;background:${color};border-radius:14px 14px 0 0"></div>
+            <div class="rrc-region" style="color:${color}">${region}</div>
+            <div class="rrc-temp" style="color:${color}">+${temp}</div>
+            <div class="rrc-unit">°C anomaly</div>
+            <div class="rrc-bar-track">
+                <div class="rrc-bar-fill" style="width:0%;background:${color}" data-w="${pct}"></div>
+            </div>
+            <div class="rrc-risk" style="color:${risk.c}">${risk.l}</div>
+        </div>`;
+    }).join("");
+
+    const el = document.getElementById("researchResults");
+    el.classList.add("visible");
+    // Animate bars
+    setTimeout(() => {
+        container.querySelectorAll(".rrc-bar-fill").forEach(b => {
+            b.style.width = b.dataset.w + "%";
+        });
+    }, 80);
+}
 </script>
 </body>
 </html>
